@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 const app = express();
@@ -14,7 +16,31 @@ mongoose.connect(process.env.MONGODB_URI).catch((err) => {
 	process.exit(1);
 });
 
-app.use(cors({ origin: ["http://localhost:3000"] }));
+// Security middlewares
+app.use(helmet());
+
+// Trust proxy so rate limiter works correctly behind proxies/load balancers
+app.set("trust proxy", 1);
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// Configure CORS via environment variable for production safety
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "http://localhost:5173,http://localhost:3000").split(",");
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			// allow requests with no origin (like mobile apps, curl, server-to-server)
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.includes(origin)) return callback(null, true);
+			return callback(new Error("Not allowed by CORS"));
+		},
+	})
+);
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -50,6 +76,12 @@ app.use(
 
 app.use("/api/reviews", (await import("./routes/api/reviewMovies.js")).default);
 app.use("/api/watchlist", (await import("./routes/api/watchlist.js")).default);
+
+// SPA fallback: serve index.html for non-API routes (client-side routing)
+app.get(/.\//, (req, res) => {
+	if (req.path.startsWith("/api/")) return res.status(404).send("Not Found");
+	return res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
 
 const cleanupLegacyReviewIndexes = async () => {
 	try {

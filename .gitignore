@@ -1,1 +1,5 @@
 documentation/
+backend-audit.json
+backend-prod-audit.json
+frontend-audit.json
+frontend-prod-audit.json
