@@ -6,10 +6,19 @@ import mongoose from "mongoose";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
-dotenv.config();
+const __dirname = new URL(".", import.meta.url).pathname;
+
+// Load env from backend/.env explicitly so running from the repo root still works
+dotenv.config({ path: path.join(__dirname, ".env") });
+
 const app = express();
 const PORT = process.env.PORT || 3000;
-const __dirname = new URL(".", import.meta.url).pathname;
+
+// Fail fast with a clear message when required env is missing
+if (!process.env.MONGODB_URI) {
+	console.error("MONGODB_URI is not set. Please set it in backend/.env or your host's environment variables.");
+	process.exit(1);
+}
 
 mongoose.connect(process.env.MONGODB_URI).catch((err) => {
 	console.error("Failed to connect to MongoDB", err);
