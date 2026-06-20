@@ -2,14 +2,20 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 import mongoose from "mongoose";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
-const __dirname = new URL(".", import.meta.url).pathname;
+// Resolve __dirname correctly with ESM file URL handling
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Load env from backend/.env explicitly so running from the repo root still works
-dotenv.config({ path: path.join(__dirname, ".env") });
+const envPath = path.join(__dirname, ".env");
+console.log(`[env] attempting to load ${envPath}`);
+console.log(`[env] exists: ${fs.existsSync(envPath)}`);
+dotenv.config({ path: envPath });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
