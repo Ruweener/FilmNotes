@@ -32,6 +32,14 @@ function AuthIcon() {
     );
 }
 
+function AboutIcon() {
+    return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="nav-icon">
+            <path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm0 4.3a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 12 6.3Zm1.6 11.2h-3.2a1 1 0 1 1 0-2h1v-4h-.7a1 1 0 1 1 0-2H12a1 1 0 0 1 1 1v5h.6a1 1 0 1 1 0 2Z" />
+        </svg>
+    );
+}
+
 function NavItem({ to, children, icon }) {
     return (
         <NavLink
@@ -72,6 +80,7 @@ function NavBar() {
                 </NavLink>
 
                 <nav className="nav-links" aria-label="Primary navigation">
+                    <NavItem to="/about" icon={<AboutIcon />}>About</NavItem>
                     <NavItem to="/reviews" icon={<ReviewsIcon />}>Reviews</NavItem>
                     <NavItem to="/watchlist" icon={<WatchlistIcon />}>Watchlist</NavItem>
                 </nav>
