@@ -39,9 +39,21 @@ app.set("trust proxy", 1);
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // limit each IP to 100 requests per windowMs
+	max: 400, // allow normal browsing and repeated form submissions without blocking reviews
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { error: "Too many requests from this IP, please try again later." },
+	handler: (req, res) => {
+		res.status(429).json({ error: "Too many requests from this IP, please try again later." });
+	},
 });
-app.use(limiter);
+
+app.use((req, res, next) => {
+	if (req.originalUrl.startsWith("/api/reviews")) {
+		return next();
+	}
+	return limiter(req, res, next);
+});
 
 // Configure CORS via environment variable for production safety
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "http://localhost:5173,http://localhost:3000").split(",");

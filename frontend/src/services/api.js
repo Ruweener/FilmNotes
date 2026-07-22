@@ -141,6 +141,9 @@ const createOrUpdateReview = async (movieId, title, header, rating, reviewText) 
                 // clear stored token so UI can react
                 localStorage.removeItem('access_token');
             }
+            if (response.status === 429) {
+                throw new Error('Too many requests. Please wait a moment and try again.');
+            }
             throw new Error(errorData.error || `Failed to save review: ${response.statusText}`);
         }
 
