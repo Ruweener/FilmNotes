@@ -208,6 +208,32 @@ body,
 	}
 
 
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+
+	.row-arrow {
+		display: grid;
+		place-items: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 999px;
+		background: rgba(15, 23, 42, 0.85);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		color: white;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+		transition: background-color 180ms ease, transform 180ms ease;
+	}
+
+	.row-arrow:hover {
+		background: rgba(15, 23, 42, 0.98);
+	}
+
 	@media (max-width: 768px) {
 		.nav-shell {
 			padding-inline: 0.75rem;

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { getPopularMovies, searchMovies, getMoviesByGenre, getMovieById, getMovieProviders } from "../services/api";
+import { getPopularMovies, searchMovies, getMoviesByGenre, getMovieById, getMovieProviders, getRecommendations } from "../services/api";
 import MovieCard from "../components/MovieCard";
+import MovieRow from "../components/MovieRow";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import MovieInfoModal from "../components/MovieInfoModal";
+import { useAuth } from "../context/AuthContext";
 
 // Hardcoded popular genres with icons
 const POPULAR_GENRES = [
@@ -15,6 +17,7 @@ const POPULAR_GENRES = [
 ];
 
 function App() {
+  const { session, loading: authLoading } = useAuth();
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -22,12 +25,37 @@ function App() {
   const [selectedProviders, setSelectedProviders] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isInfoLoading, setIsInfoLoading] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [recsLoading, setRecsLoading] = useState(false);
   const initialSearchLoadRef = useRef(true);
   const infoRequestRef = useRef(0);
 
   useEffect(() => {
     fetchMovies();
   }, []);
+
+  useEffect(() => {
+    if (authLoading || !session) {
+      setRecommendations([]);
+      setRecsLoading(false);
+      return;
+    }
+
+    let isActive = true;
+    setRecsLoading(true);
+
+    (async () => {
+      const { recommendations: results } = await getRecommendations();
+      if (isActive) {
+        setRecommendations(results || []);
+        setRecsLoading(false);
+      }
+    })();
+
+    return () => {
+      isActive = false;
+    };
+  }, [session, authLoading]);
 
   useEffect(() => {
     if (initialSearchLoadRef.current) {
@@ -127,6 +155,15 @@ function App() {
     <div className="w-full min-h-screen bg-gray-900">
       <NavBar />
       <main className="max-w-7xl mx-auto px-4 py-6">
+        {session && (recsLoading || recommendations.length > 0) && (
+          <MovieRow
+            title="Recommended for you"
+            movies={recommendations}
+            onInfoClick={handleOpenMovieInfo}
+            isLoading={recsLoading}
+          />
+        )}
+
         <div className="mb-6">
           <div className="mb-4">
             <input

@@ -197,6 +197,20 @@ const getMoviesByGenre = async (genreId) => {
     }
 }
 
+const getRecommendations = async () => {
+    try {
+        const response = await fetch('/api/recommendations', await withAuth());
+        if (!response.ok) {
+            throw new Error('Failed to fetch recommendations');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching recommendations:', error);
+        return { recommendations: [], reason: 'error' };
+    }
+}
+
 const getMovieProviders = async (movieId, region = 'US') => {
     try {
         const response = await fetch(`/api/movies/providers/${movieId}?region=${encodeURIComponent(region)}`);
@@ -213,4 +227,4 @@ const getMovieProviders = async (movieId, region = 'US') => {
     }
 }
 
-export { getPopularMovies, searchMovies, getMovieById, getWatchlist, addToWatchlist, removeFromWatchlist, getAllReviews, createOrUpdateReview, deleteReview, getGenres, getMoviesByGenre, getMovieProviders };
+export { getPopularMovies, searchMovies, getMovieById, getWatchlist, addToWatchlist, removeFromWatchlist, getAllReviews, createOrUpdateReview, deleteReview, getGenres, getMoviesByGenre, getMovieProviders, getRecommendations };

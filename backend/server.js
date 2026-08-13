@@ -103,6 +103,7 @@ app.use(
 
 app.use("/api/reviews", (await import("./routes/api/reviewMovies.js")).default);
 app.use("/api/watchlist", (await import("./routes/api/watchlist.js")).default);
+app.use("/api/recommendations", (await import("./routes/api/recommendations.js")).default);
 
 // SPA fallback: serve index.html for non-API routes (client-side routing)
 app.get(/.\//, (req, res) => {
