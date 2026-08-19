@@ -2,7 +2,7 @@
 
 FilmNotes is a full-stack movie review web app built with React, Vite, Express, MongoDB, and the TMDB API. It lets users discover popular movies, search for titles, save movies to a personal watchlist, and create or update reviews with ratings and written notes.
 
-## Check out this Showcase!
+## Click Here to check out the Showcase!
 [![FilmNotes Showcase](https://img.youtube.com/vi/Wam0NEXCfgE/0.jpg)](https://www.youtube.com/watch?v=Wam0NEXCfgE)
 
 ## Features
