@@ -1,0 +1,24 @@
+name: Keep Services Alive
+
+on:
+  schedule:
+    - cron: "0 12 * * 1,4" # Mondays & Thursdays at 12:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install mongodb@6
+
+      - run: node scripts/keep-alive.mjs
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
