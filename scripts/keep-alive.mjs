@@ -20,7 +20,7 @@ async function pingSupabase() {
   if (!url) throw new Error("SUPABASE_URL is not set");
   if (!key) throw new Error("SUPABASE_ANON_KEY is not set");
 
-  const res = await fetch(`${url}/rest/v1/`, {
+  const res = await fetch(`${url}/auth/v1/health`, {
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
