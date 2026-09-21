@@ -28,7 +28,10 @@ async function pingSupabase() {
   });
 
   if (!res.ok) {
-    throw new Error(`Supabase ping failed: ${res.status} ${res.statusText}`);
+    const body = await res.text().catch(() => "<no body>");
+    throw new Error(
+      `Supabase ping failed: ${res.status} ${res.statusText} — ${body} (url: ${url}, key prefix: ${key.slice(0, 12)}..., key length: ${key.length})`,
+    );
   }
   console.log("Supabase ping OK");
 }
