@@ -17,11 +17,11 @@ function About() {
                                 A place to collect, review, and revisit the movies that matter to you.
                             </h1>
                             <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-                                FilmNotes is a movie review app built to help you keep track of what you have watched, record your thoughts, and save films for later. It combines a fast review flow with a personal watchlist so your favorite titles and future picks stay in one place.
+                                FilmNotes is a movie review app built to help you keep track of what you have watched, record your thoughts, and save films for later. It combines a fast review flow with a personal watchlist so your favorite titles and future picks stay in one place, and it learns from what you review and save to suggest what to watch next.
                             </p>
                         </div>
 
-                        <div className="grid gap-4 md:grid-cols-3">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                             <article className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur">
                                 <h2 className="text-lg font-bold text-white">Review your favorites</h2>
                                 <p className="mt-3 text-sm leading-6 text-slate-300">
@@ -32,6 +32,12 @@ function About() {
                                 <h2 className="text-lg font-bold text-white">Build a watchlist</h2>
                                 <p className="mt-3 text-sm leading-6 text-slate-300">
                                     Save upcoming films while browsing so you always have a short list ready when you are looking for something new to watch.
+                                </p>
+                            </article>
+                            <article className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur">
+                                <h2 className="text-lg font-bold text-white">Get recommendations</h2>
+                                <p className="mt-3 text-sm leading-6 text-slate-300">
+                                    Once you have reviewed or saved a few films, the home page suggests new ones in the genres you rate highest, skipping anything already on your lists.
                                 </p>
                             </article>
                             <article className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/40 backdrop-blur">
@@ -59,6 +65,7 @@ function About() {
                                     <li className="rounded-2xl border border-white/10 bg-slate-950/30 px-4 py-3">Browse movies and open details quickly.</li>
                                     <li className="rounded-2xl border border-white/10 bg-slate-950/30 px-4 py-3">Create reviews and revisit them later.</li>
                                     <li className="rounded-2xl border border-white/10 bg-slate-950/30 px-4 py-3">Keep a watchlist of titles you want to see.</li>
+                                    <li className="rounded-2xl border border-white/10 bg-slate-950/30 px-4 py-3">Discover personalized picks based on your reviews and watchlist.</li>
                                 </ul>
                             </aside>
                         </div>
