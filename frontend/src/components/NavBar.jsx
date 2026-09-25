@@ -40,10 +40,19 @@ function AboutIcon() {
     );
 }
 
-function NavItem({ to, children, icon }) {
+function HomeIcon() {
+    return (
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="nav-icon">
+            <path d="M11.3 2.8a1 1 0 0 1 1.4 0l8 7.5a1 1 0 0 1-1.37 1.46L19 11.4V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-4.5h-2V20a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-7.6l-.33.36a1 1 0 1 1-1.47-1.36l8.1-7.6Z" />
+        </svg>
+    );
+}
+
+function NavItem({ to, children, icon, end }) {
     return (
         <NavLink
             to={to}
+            end={end}
             className={({ isActive }) =>
                 [
                     "nav-link",
@@ -80,9 +89,10 @@ function NavBar() {
                 </NavLink>
 
                 <nav className="nav-links" aria-label="Primary navigation">
-                    <NavItem to="/about" icon={<AboutIcon />}>About</NavItem>
+                    <NavItem to="/" icon={<HomeIcon />} end>Home</NavItem>
                     <NavItem to="/reviews" icon={<ReviewsIcon />}>Reviews</NavItem>
                     <NavItem to="/watchlist" icon={<WatchlistIcon />}>Watchlist</NavItem>
+                    <NavItem to="/about" icon={<AboutIcon />}>About</NavItem>
                 </nav>
 
                 <div className="nav-actions">
