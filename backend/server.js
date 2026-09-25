@@ -32,7 +32,17 @@ mongoose.connect(process.env.MONGODB_URI).catch((err) => {
 });
 
 // Security middlewares
-app.use(helmet());
+// CSP must allow the browser to reach Supabase auth and load TMDB poster images
+app.use(
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				connectSrc: ["'self'", process.env.SUPABASE_URL, "wss://*.supabase.co"].filter(Boolean),
+				imgSrc: ["'self'", "data:", "https://image.tmdb.org", "https://fireteller.com.au"],
+			},
+		},
+	})
+);
 
 // Trust proxy so rate limiter works correctly behind proxies/load balancers
 app.set("trust proxy", 1);
@@ -72,10 +82,6 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-app.get("/", (req, res) => {
-	res.send("Welcome to the Movie Reviewer API");
-});
-
 app.use(
 	"/api/movies/popular",
 	(await import("./routes/third-party-api/popularMovies.js")).default
@@ -106,7 +112,7 @@ app.use("/api/watchlist", (await import("./routes/api/watchlist.js")).default);
 app.use("/api/recommendations", (await import("./routes/api/recommendations.js")).default);
 
 // SPA fallback: serve index.html for non-API routes (client-side routing)
-app.get(/.\//, (req, res) => {
+app.get(/^(?!\/api\/).*/, (req, res) => {
 	if (req.path.startsWith("/api/")) return res.status(404).send("Not Found");
 	return res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
