@@ -32,9 +32,11 @@ mongoose.connect(process.env.MONGODB_URI).catch((err) => {
 });
 
 // Security middlewares
-// CSP must allow the browser to reach Supabase auth and load TMDB poster images
+// CSP must allow the browser to reach Supabase auth and load TMDB poster images.
+// COEP is disabled because require-corp blocks cross-origin images (TMDB doesn't send CORP headers).
 app.use(
 	helmet({
+		crossOriginEmbedderPolicy: false,
 		contentSecurityPolicy: {
 			directives: {
 				connectSrc: ["'self'", process.env.SUPABASE_URL, "wss://*.supabase.co"].filter(Boolean),
