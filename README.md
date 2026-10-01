@@ -8,20 +8,6 @@
 
 ---
 
-## Screenshots
-
-<!-- Put the image files in docs/screenshots/ using the file names below. -->
-
-| Home & recommendations | Watchlist |
-| --- | --- |
-| ![Home page with trending movies and a "Recommended for you" row](docs/screenshots/home.png) | ![Watchlist page](docs/screenshots/watchlist.png) |
-
-| Your reviews | Writing a review |
-| --- | --- |
-| ![Review list](docs/screenshots/reviews.png) | ![Review editor](docs/screenshots/review-editor.png) |
-
----
-
 ## Features
 
 - **Accounts:** sign up and log in with email and password. Your reviews and watchlist are private to you.
